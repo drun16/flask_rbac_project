@@ -20,3 +20,14 @@ class Config:
     # Database configuration
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(basedir, 'app.db'))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class TestingConfig(Config):
+    """
+    Configuration for testing.
+    Uses an in-memory SQLite database.
+    """
+    TESTING = True
+    # Use an in-memory SQLite database for tests
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    # Disable CSRF protection in forms for testing purposes
+    WTF_CSRF_ENABLED = False

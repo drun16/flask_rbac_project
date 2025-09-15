@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     
     # Define the many-to-many relationship to Role
-    roles = db.relationship('Role', secondary=user_roles, backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary=user_roles, backref='users')
 
     def set_password(self, password):
         """Hashes the password and stores it."""

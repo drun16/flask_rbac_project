@@ -5,6 +5,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import db
 from app.models import User, Role
 from app.forms import RegistrationForm, LoginForm
+from app.decorators import role_required
 
 # Create a Blueprint
 main = Blueprint('main', __name__)
@@ -25,6 +26,11 @@ def register():
         # Create user and save to database
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
+
+        user_role = Role.query.filter_by(name='User').first()
+        if user_role:
+            user.roles.append(user_role)
+
         db.session.add(user)
         db.session.commit()
         
@@ -61,3 +67,9 @@ def logout():
 @login_required
 def dashboard():
     return render_template('dashboard.html', title='Dashboard')
+
+@main.route("/admin_page")
+@login_required
+@role_required('Admin')
+def admin_page():
+    return "<h1>This is the Admin-Only Page</h1><p>Only users with the 'Admin' role can see this!</p>"
