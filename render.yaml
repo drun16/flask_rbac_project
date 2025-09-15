@@ -1,0 +1,29 @@
+# render.yaml
+
+services:
+  # A PostgreSQL database
+  - type: psql
+    name: flask-rbac-db
+    plan: free
+
+  # A web service
+  - type: web
+    name: flask-rbac-app
+    plan: free
+    # Specifies the runtime environment
+    runtime: python
+    # Command to install dependencies
+    buildCommand: "pip install -r requirements.txt"
+    # Command to start the Gunicorn server
+    startCommand: "gunicorn wsgi:app"
+    # Link the database to the web service
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          type: psql
+          name: flask-rbac-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true # Render will automatically generate a secure secret key
+      - key: FLASK_APP
+        value: wsgi.py
