@@ -1,25 +1,24 @@
 # render.yaml
 
 databases:
-  # Defines a PostgreSQL database instance
   - name: flask-rbac-db
     plan: free
 
 services:
-  # Defines a web service
   - type: web
     name: flask-rbac-app
     plan: free
     runtime: python
-    buildCommand: "pip install -r requirements.txt"
+    # --- UPDATE THE BUILD COMMAND ---
+    buildCommand: "pip install -r requirements.txt && flask db upgrade && python seed.py"
     startCommand: "gunicorn wsgi:app"
     envVars:
       - key: DATABASE_URL
-        # Correctly refers to the database defined above
         fromDatabase:
           name: flask-rbac-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: FLASK_APP
-        value: wsgi.py
+        # Point to run.py which has the 'flask' command context
+        value: run.py
