@@ -2,6 +2,18 @@
 
 A production-ready Flask application featuring user authentication, Role-Based Access Control (RBAC), and a complete admin dashboard.
 
+---
+
+## 🚀 Live Demo
+
+You can view the live, deployed application here:
+
+**[https://drun16.pythonanywhere.com/](https://drun16.pythonanywhere.com/)**
+
+
+
+---
+
 ## Description
 
 This project is a boilerplate Flask application that provides a solid foundation for building web applications that require user management. It includes user registration, login/logout, password hashing, and role management ('User' and 'Admin'). The admin dashboard, built with Flask-Admin, allows administrators to perform CRUD operations on users and roles.
@@ -22,7 +34,7 @@ This project is a boilerplate Flask application that provides a solid foundation
 ## Technology Stack
 
 * **Backend**: Flask
-* **Database**: Flask-SQLAlchemy (defaults to SQLite, configurable for PostgreSQL)
+* **Database**: Flask-SQLAlchemy (defaults to SQLite, configurable for production)
 * **Authentication**: Flask-Login
 * **Admin Interface**: Flask-Admin
 * **Password Hashing**: Flask-Bcrypt
@@ -32,9 +44,15 @@ This project is a boilerplate Flask application that provides a solid foundation
 
 ---
 
-## Setup and Installation
+## Deployment
 
-Follow these steps to get the application running locally.
+This application is deployed on **PythonAnywhere**. The production environment is configured to use a **MySQL** database and is served by a production-grade WSGI server.
+
+---
+
+## Setup and Installation (Local)
+
+Follow these steps to get the application running on your local machine.
 
 ### 1. Clone the Repository
 ```bash
@@ -76,32 +94,14 @@ Run the flask shell to set up the necessary user roles and create your first adm
 ```bash
 flask shell
 ```
-
-Inside the shell, run the following:
-```python
-from app import db
-from app.models import Role, User
-
-# Create roles
-db.session.add_all([Role(name='Admin'), Role(name='User')])
-db.session.commit()
-
-# Create an admin user (replace with your details)
-admin_user = User(username='admin', email='admin@example.com')
-admin_user.set_password('your_strong_password')
-admin_role = Role.query.filter_by(name='Admin').first()
-admin_user.roles.append(admin_role)
-db.session.add(admin_user)
-db.session.commit()
-
-exit()
-```
+Inside the shell, run the appropriate Python commands to create `Role` and `User` objects.
 
 ---
 
 ## Running the Application
 
-To run the Flask development server:
+### Local Development
+To run the Flask development server on your machine:
 ```bash
 python run.py
 ```
